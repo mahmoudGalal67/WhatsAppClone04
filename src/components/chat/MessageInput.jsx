@@ -1,33 +1,86 @@
-import { useState } from "react";
+import { useState, useRef } from "react";
 import { useChat } from "../../context/ChatContext";
-import { PlusIcon, SendIcon, SmileIcon } from "lucide-react";
+import { ImageIcon, SendHorizonal } from "lucide-react";
 
 export default function MessageInput() {
   const [text, setText] = useState("");
+  const [preview, setPreview] = useState(null);
+  const fileRef = useRef();
   const { sendMessage } = useChat();
 
-  const submit = (e) => {
+  const submitText = (e) => {
     e.preventDefault();
-    sendMessage(text);
+    if (!text.trim()) return;
+    sendMessage({ text });
     setText("");
   };
 
+  const handleImage = (e) => {
+    const file = e.target.files[0];
+    if (!file) return;
+    const imageUrl = URL.createObjectURL(file);
+    setPreview(imageUrl);
+  };
+
+  const sendImage = () => {
+    sendMessage({ image: preview });
+    setPreview(null);
+    fileRef.current.value = "";
+  };
+
   return (
-    <form
-      onSubmit={submit}
-      className="h-14 px-4 flex items-center gap-3 bg-[#202c33]"
-    >
-      <div className="relative flex-1 bg-[#111b21] px-4 py-2 rounded-3xl outline-none">
+    <div className="bg-[#202c33] p-3">
+      {/* Image Preview */}
+      {preview && (
+        <div className="mb-2 relative w-40">
+          <img src={preview} className="rounded-lg" />
+          <button
+            onClick={() => setPreview(null)}
+            className="absolute top-1 right-1 bg-black/60 text-white rounded-full px-2 cursor-pointer"
+          >
+            ✕
+          </button>
+        </div>
+      )}
+
+      <form onSubmit={submitText} className="flex bg-[#111b21] items-center gap-2 rounded-2xl relative pl-12">
+        <button
+          type="button"
+          onClick={() => fileRef.current.click()}
+          className="text-gray-400 absolute left-4 top-1/2 -translate-y-1/2 cursor-pointer"
+        >
+          <ImageIcon size={22} />
+        </button>
+
+        <input
+          ref={fileRef}
+          type="file"
+          accept="image/*"
+          hidden
+          onChange={handleImage}
+        />
+
         <input
           value={text}
           onChange={(e) => setText(e.target.value)}
-          className=" text-sm w-full outline-none pl-18"
+          className="flex-1 px-4 py-2  outline-none text-sm"
           placeholder="Type a message"
         />
-        <SendIcon className="w-4 h-4 text-gray-400 absolute right-4 top-1/2 -translate-y-1/2" />
-        <PlusIcon className="w-6 h-6 font-[600] text-gray-400 absolute left-4 top-1/2 -translate-y-1/2" />
-        <SmileIcon className="w-6 h-6 font-[600] text-gray-400 absolute left-12 top-1/2 -translate-y-1/2" />
-      </div>
-    </form>
+
+        {preview ? (
+          <button
+            type="button"
+            onClick={sendImage}
+            className="text-green-500 absolute right-4 top-1/2 -translate-y-1/2 cursor-pointer"
+          >
+            <SendHorizonal size={22} />
+          </button>
+        ) : (
+          <button type="submit" className="text-green-500 absolute right-4 top-1/2 -translate-y-1/2 cursor-pointer">
+            <SendHorizonal size={22} />
+          </button>
+        )}
+      </form>
+    </div>
   );
 }

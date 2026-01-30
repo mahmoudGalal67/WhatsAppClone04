@@ -19,19 +19,18 @@ export function ChatProvider({ children }) {
     setShowChat(false);
   };
 
-  const sendMessage = (text) => {
-    if (!text) return;
+  const sendMessage = (payload) => {
+    if (!activeChat) return;
 
     const message = {
       id: Date.now(),
-      text,
       fromMe: true,
       time: new Date().toLocaleTimeString([], {
         hour: "2-digit",
         minute: "2-digit",
       }),
+      ...payload, // { text } OR { image }
     };
-
     setActiveChat((prev) => ({
       ...prev,
       messages: [...prev.messages, message],

@@ -63,7 +63,7 @@ export default function Sidebar() {
         <input
           className="w-full pl-8
           placeholder:text-gray-400
-           bg-[#111b21] px-4 py-2 rounded-lg text-sm outline-none"
+           bg-[#111b21] px-4 py-2 rounded-2xl text-sm outline-none"
           placeholder="Search or start a new chat"
         />
       </div>
