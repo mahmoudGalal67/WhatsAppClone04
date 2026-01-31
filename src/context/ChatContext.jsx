@@ -9,14 +9,13 @@ export function ChatProvider({ children }) {
   const [activeChat, setActiveChat] = useState(null);
   const [messages, setMessages] = useState([]);
   const [loadingMessages, setLoadingMessages] = useState(false);
-
+  const [selectionMode, setSelectionMode] = useState(false);
+  const [selectedMessages, setSelectedMessages] = useState([]);
   // 👇 mobile navigation
   const [showChat, setShowChat] = useState(false);
 
-
   useEffect(() => {
     getConversations().then(setConversations).catch(console.error);
-
   }, []);
 
   // Load messages when active chat changes
@@ -25,12 +24,24 @@ export function ChatProvider({ children }) {
 
     setLoadingMessages(true);
     getMessages(activeChat.id)
-      .then(setMessages).then(() => {
+      .then(setMessages)
+      .then(() => {
         console.log(messages);
       })
       .catch(console.error)
       .finally(() => setLoadingMessages(false));
   }, [activeChat]);
+
+  const toggleMessageSelection = (id) => {
+    setSelectedMessages((prev) =>
+      prev.includes(id) ? prev.filter((m) => m !== id) : [...prev, id],
+    );
+  };
+
+  const clearSelection = () => {
+    setSelectionMode(false);
+    setSelectedMessages([]);
+  };
 
   const openChat = (chat) => {
     setActiveChat(chat);
@@ -44,9 +55,11 @@ export function ChatProvider({ children }) {
   const handlelSendMessage = (payload) => {
     if (!activeChat) return;
 
-
-    sendMessage(activeChat.phoneNumber, payload.content)
-    setMessages((prev) => [...prev, { createdAt: new Date(), content: payload.content, isIncoming: true }]);
+    sendMessage(activeChat.phoneNumber, payload.content);
+    setMessages((prev) => [
+      ...prev,
+      { createdAt: new Date(), content: payload.content, isIncoming: true },
+    ]);
   };
 
   return (
@@ -60,6 +73,11 @@ export function ChatProvider({ children }) {
         showChat,
         messages,
         loadingMessages,
+        selectionMode,
+        setSelectionMode,
+        selectedMessages,
+        toggleMessageSelection,
+        clearSelection,
       }}
     >
       {children}

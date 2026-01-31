@@ -3,7 +3,14 @@ import MessageList from "../chat/MessageList";
 import MessageInput from "../chat/MessageInput";
 import Avatar from "../common/Avatar";
 import { useEffect, useRef, useState } from "react";
-import { ArrowLeftIcon, BackpackIcon, BoxSelectIcon, MessageSquareTextIcon, TrashIcon, UserIcon } from "lucide-react";
+import {
+  ArrowLeftIcon,
+  BackpackIcon,
+  BoxSelectIcon,
+  MessageSquareTextIcon,
+  TrashIcon,
+  UserIcon,
+} from "lucide-react";
 
 export default function ChatArea() {
   const { activeChat, closeChat, showChat } = useChat();
@@ -30,16 +37,19 @@ export default function ChatArea() {
   }
 
   return (
-    <main className={`flex-1 flex scrollbar-hover flex-col bg-[#0b141a] relative ${showChat ? "translate-x-0" : "translate-x-full md:translate-x-0"} transform transition-transform duration-300 ease-in-out`}>
+    <main
+      className={`flex-1 flex scrollbar-hover flex-col bg-[#0b141a] relative ${showChat ? "translate-x-0" : "translate-x-full md:translate-x-0"} transform transition-transform duration-300 ease-in-out`}
+    >
       {/* Header */}
       <div className="h-14 px-4 flex items-center justify-between border-b border-[#2a3942] bg-[#202c33] relative">
         <div className="flex items-center gap-2">
           {/* Back arrow (mobile only) */}
-          <button
-            onClick={closeChat}
-            className="md:hidden text-xl"
-          >
-            <ArrowLeftIcon width={40} height={40} className="text-gray-400 cursor-pointer hover:text-white hover:bg-[#2a3942] p-2 rounded-full" />
+          <button onClick={closeChat} className="md:hidden text-xl">
+            <ArrowLeftIcon
+              width={40}
+              height={40}
+              className="text-gray-400 cursor-pointer hover:text-white hover:bg-[#2a3942] p-2 rounded-full"
+            />
           </button>
           <Avatar src={activeChat.avatar} />
           <h3 className="text-sm font-medium">{activeChat.name}</h3>
@@ -56,12 +66,29 @@ export default function ChatArea() {
 
           {/* Dropdown */}
           {open && (
-            <div className="absolute right-0 top-10 w-48 bg-[#233138] shadow-lg rounded-md py-1 text-sm z-50 rounded-b-lg px-2 py-4">
-              <MenuItem text="Contact info" icon={<UserIcon width={16} height={16} />} />
-              <MenuItem text="Select messages" icon={<BoxSelectIcon width={16} height={16} />} />
-              <MenuItem text="Mute notifications" icon={<MessageSquareTextIcon width={16} height={16} />} />
-              <MenuItem text="Clear messages" danger icon={<MessageSquareTextIcon width={16} height={16} />} />
-              <MenuItem text="Delete chat" danger icon={<TrashIcon width={16} height={16} />} />
+            <div className="absolute right-0 top-10 w-48 bg-[#233138] shadow-lg rounded-md  text-sm z-50 rounded-b-lg px-2 py-4">
+              <MenuItem
+                text="Contact info"
+                icon={<UserIcon width={16} height={16} />}
+              />
+              <MenuItem
+                text="Select messages"
+                icon={<BoxSelectIcon width={16} height={16} />}
+              />
+              <MenuItem
+                text="Mute notifications"
+                icon={<MessageSquareTextIcon width={16} height={16} />}
+              />
+              <MenuItem
+                text="Clear messages"
+                danger
+                icon={<MessageSquareTextIcon width={16} height={16} />}
+              />
+              <MenuItem
+                text="Delete chat"
+                danger
+                icon={<TrashIcon width={16} height={16} />}
+              />
             </div>
           )}
         </div>

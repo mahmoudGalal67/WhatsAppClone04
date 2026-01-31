@@ -1,12 +1,14 @@
 import { useState, useRef } from "react";
 import { useChat } from "../../context/ChatContext";
 import { ImageIcon, SendHorizonal } from "lucide-react";
+import SelectionBar from "./SelectionBar";
 
 export default function MessageInput() {
   const [text, setText] = useState("");
   const [preview, setPreview] = useState(null);
   const fileRef = useRef();
-  const { handlelSendMessage } = useChat();
+  const { handlelSendMessage, selectionMode } = useChat();
+  const [showDeletePopup, setShowDeletePopup] = useState(false);
 
   const submitText = (e) => {
     e.preventDefault();
@@ -28,6 +30,9 @@ export default function MessageInput() {
     fileRef.current.value = "";
   };
 
+  {
+    selectionMode && <SelectionBar onDelete={() => setShowDeletePopup(true)} />;
+  }
   return (
     <div className="bg-[#202c33] p-3">
       {/* Image Preview */}
@@ -43,7 +48,10 @@ export default function MessageInput() {
         </div>
       )}
 
-      <form onSubmit={submitText} className="flex bg-[#111b21] items-center gap-2 rounded-2xl relative pl-12">
+      <form
+        onSubmit={submitText}
+        className="flex bg-[#111b21] items-center gap-2 rounded-2xl relative pl-12"
+      >
         <button
           type="button"
           onClick={() => fileRef.current.click()}
@@ -76,11 +84,18 @@ export default function MessageInput() {
             <SendHorizonal size={22} />
           </button>
         ) : (
-          <button type="submit" className="text-green-500 absolute right-4 top-1/2 -translate-y-1/2 cursor-pointer">
+          <button
+            type="submit"
+            className="text-green-500 absolute right-4 top-1/2 -translate-y-1/2 cursor-pointer"
+          >
             <SendHorizonal size={22} />
           </button>
         )}
       </form>
+
+      {showDeletePopup && (
+        <DeletePopup onClose={() => setShowDeletePopup(false)} />
+      )}
     </div>
   );
 }
