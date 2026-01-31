@@ -6,12 +6,12 @@ export default function MessageInput() {
   const [text, setText] = useState("");
   const [preview, setPreview] = useState(null);
   const fileRef = useRef();
-  const { sendMessage } = useChat();
+  const { handlelSendMessage } = useChat();
 
   const submitText = (e) => {
     e.preventDefault();
     if (!text.trim()) return;
-    sendMessage({ text });
+    handlelSendMessage({ content: text });
     setText("");
   };
 
@@ -23,7 +23,7 @@ export default function MessageInput() {
   };
 
   const sendImage = () => {
-    sendMessage({ image: preview });
+    handlelSendMessage({ image: preview });
     setPreview(null);
     fileRef.current.value = "";
   };

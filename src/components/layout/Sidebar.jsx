@@ -6,7 +6,8 @@ import { BoxSelectIcon, MessageSquareTextIcon, UserIcon } from "lucide-react";
 import { useChat } from "../../context/ChatContext";
 
 export default function Sidebar() {
-  const { showChat } = useChat();
+  const { conversations, setActiveChat, activeChat, showChat } = useChat();
+  console.log(conversations);
   const [open, setOpen] = useState(false);
   const menuRef = useRef(null);
 
