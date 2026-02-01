@@ -19,8 +19,8 @@ function App() {
   return (
     <div>
       <Routes>
-        <Route path="/" element={<PublicRoute><SignUp /></PublicRoute>} />
-        <Route path="/signIn" element={<PublicRoute><SignIn /></PublicRoute>} />
+        <Route path="/" element={<PublicRoute><SignIn /></PublicRoute>} />
+        <Route path="/signUp" element={<PublicRoute><SignUp /></PublicRoute>} />
         <Route path="/choose" element={<PublicRoute><ChoosePage /></PublicRoute>} />
         <Route path="/chats" element={<PrivateRoute><ChatPage /></PrivateRoute>} />
         {/* <Route path="*" element={<NotFound />} /> */}
