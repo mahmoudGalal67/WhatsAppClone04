@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { X } from "lucide-react";
-import axios from "../../api/axios";
+import { addConversations } from "../../api/chatApi";
+import { useChat } from "../../context/ChatContext";
 
 export default function NewChatModal({ onClose }) {
     const [name, setName] = useState("");
@@ -9,6 +10,8 @@ export default function NewChatModal({ onClose }) {
     const [preview, setPreview] = useState(null);
     const [loading, setLoading] = useState(false);
     const menuRef = useRef(null);
+
+    const { setConversations } = useChat()
 
     // Close menu when clicking outside
     useEffect(() => {
@@ -37,12 +40,11 @@ export default function NewChatModal({ onClose }) {
             const formData = new FormData();
             formData.append("name", name);
             formData.append("phoneNumber", phoneNumber);
-            if (image) formData.append("image", image);
+            if (image) formData.append("imageUrl", image);
 
-            await axios.post("/contacts", formData, {
-                headers: { "Content-Type": "multipart/form-data" },
-            });
-
+            const response = await addConversations({ phoneNumber, name, imageUrl: 'fdsfds' })
+            // const response = addConversations(formData)
+            setConversations((prev) => [{ ...response, createdAt: new Date() }, ...prev])
             onClose();
         } catch (err) {
             console.error(err);

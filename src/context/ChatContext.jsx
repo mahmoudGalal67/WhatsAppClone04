@@ -67,6 +67,7 @@ export function ChatProvider({ children }) {
       value={{
         conversations,
         activeChat,
+        setActiveChat,
         openChat,
         closeChat,
         handlelSendMessage,
@@ -78,7 +79,8 @@ export function ChatProvider({ children }) {
         selectedMessages,
         toggleMessageSelection,
         clearSelection,
-        setMessages
+        setMessages,
+        setConversations
       }}
     >
       {children}

@@ -15,6 +15,14 @@ export const getConversations = async () => {
     return data;
 };
 
+export const addConversations = async (payload) => {
+    const { data } = await axiosInstance.post("/conversations/by-phone", { phoneNumber: payload.phoneNumber, name: payload.name, imageUrl: payload.imageUrl });
+    return data;
+};
+export const deleteConversations = async (id) => {
+    const { data } = await axiosInstance.delete(`/conversations/${id}`);
+};
+
 export const getMessages = async (conversationId) => {
     const { data } = await axiosInstance.get(`/messages/conversation/${conversationId}`);
     return data;

@@ -11,9 +11,10 @@ import {
   TrashIcon,
   UserIcon,
 } from "lucide-react";
+import { deleteConversations } from "../../api/chatApi";
 
 export default function ChatArea() {
-  const { activeChat, closeChat, showChat } = useChat();
+  const { activeChat, closeChat, showChat, setConversations, setActiveChat } = useChat();
   const [open, setOpen] = useState(false);
   const menuRef = useRef(null);
 
@@ -34,6 +35,14 @@ export default function ChatArea() {
         Select a chat
       </main>
     );
+  }
+
+
+  const deleteChat = () => {
+    deleteConversations(activeChat.id)
+    setConversations((prev) => prev.filter((conv => conv.id != activeChat.id)))
+    setActiveChat(null)
+    setOpen(false)
   }
 
   return (
@@ -91,6 +100,7 @@ export default function ChatArea() {
                 text="Delete chat"
                 danger
                 icon={<TrashIcon width={16} height={16} />}
+                onClick={deleteChat}
               />
             </div>
           )}
@@ -102,9 +112,10 @@ export default function ChatArea() {
   );
 }
 
-function MenuItem({ text, danger, icon }) {
+function MenuItem({ text, danger, icon, onClick }) {
   return (
     <div
+      onClick={onClick}
       className={` px-2 py-2 cursor-pointer hover:bg-[#111b21] flex items-center gap-1 rounded-lg
       ${danger ? "text-red-400" : "text-gray-200"}`}
     >

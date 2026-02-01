@@ -38,9 +38,9 @@ export default function Message({ message }) {
   }, []);
 
   return (
-    <div className="flex items-center gap-4 flex-row-reverse">
+    <div className="flex  gap-4 flex-row-reverse">
       <div
-        className={`max-w-[45%] w-fit px-2 py-1 rounded-lg text-sm relative flex items-center gap-3 group relative flex items-end gap-2   ${message.isIncoming ? "ml-auto" : "mr-auto"
+        className={`max-w-[45%] w-fit px-2 py-1 break-all text-left rounded-lg text-sm relative flex items-center gap-3 group relative flex items-end gap-2   ${message.isIncoming ? "ml-auto" : "mr-auto"
           } ${message.isIncoming ? "bg-[#005c4b]" : "bg-[#202c33]"
           }`}
         ref={menuRef}
@@ -91,7 +91,7 @@ export default function Message({ message }) {
           <img src={message.image} className="rounded-lg max-h-60 mt-1" />
         )}
 
-        <div className="text-[10px] text-gray-300 text-right mt-2 flex gap-1 justify-end">
+        <div className="text-[10px] text-gray-300 text-right mt-2 flex gap-1 justify-end items-end w-14 ">
           <DateText
             date={message.createdAt}
             formatStr="HH:mm"
