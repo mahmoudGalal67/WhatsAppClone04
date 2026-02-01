@@ -5,9 +5,9 @@ export default function SelectionBar({ onDelete }) {
   const { selectedMessages, clearSelection } = useChat();
 
   return (
-    <div className="h-14 bg-[#202c33] flex items-center justify-between px-4 border-b border-[#2a3942]">
+    <div className="h-14 bg-[#202c33] flex items-center justify-between px-4 border-b border-[#2a3942] absolute bottom-0 left-0 right-0">
       <div className="flex items-center gap-4">
-        <button onClick={clearSelection}>
+        <button onClick={clearSelection} className="cursor-pointer">
           <X />
         </button>
         <span>{selectedMessages.length} selected</span>
@@ -15,7 +15,7 @@ export default function SelectionBar({ onDelete }) {
 
       <button
         onClick={onDelete}
-        className="text-red-400 hover:text-red-600 transition"
+        className="text-red-400 hover:text-red-600 transition cursor-pointer"
       >
         <Trash2 />
       </button>

@@ -1,14 +1,15 @@
-import { LogOutIcon, SearchIcon } from "lucide-react";
+import { BellOffIcon, LogOutIcon, SearchIcon } from "lucide-react";
 import ChatList from "../chat/ChatList";
 import Avatar from "../common/Avatar";
 import { useEffect, useRef, useState } from "react";
 import { BoxSelectIcon, MessageSquareTextIcon, UserIcon } from "lucide-react";
 import { useChat } from "../../context/ChatContext";
+import NewChatModal from "../chat/NewChatModal";
 
 export default function Sidebar() {
-  const { conversations, setActiveChat, activeChat, showChat } = useChat();
-  console.log(conversations);
+  const { conversations, showChat } = useChat();
   const [open, setOpen] = useState(false);
+  const [openNewChat, setOpenNewChat] = useState(false);
   const menuRef = useRef(null);
 
   // Close menu when clicking outside
@@ -22,6 +23,17 @@ export default function Sidebar() {
     return () => document.removeEventListener("mousedown", handler);
   }, []);
 
+  const handleLogout = () => {
+    localStorage.removeItem("token");
+    localStorage.removeItem("user");
+    window.location.href = "/signIn";
+  };
+
+
+  const handleNewChat = () => {
+    setOpenNewChat(true);
+    setOpen(false);
+  };
   return (
     <aside
       className={`
@@ -37,6 +49,7 @@ export default function Sidebar() {
     ${showChat ? "-translate-x-full md:translate-x-0" : "translate-x-0"}
   `}
     >
+      {openNewChat && <NewChatModal onClose={() => setOpenNewChat(false)} />}
       {/* Header */}
       <div className="h-14 px-4 flex items-center justify-between">
         <div className="flex items-center gap-8">
@@ -48,11 +61,11 @@ export default function Sidebar() {
           {/* Dropdown */}
           {open && (
             <div className="absolute right-0 top-10 w-48 bg-[#233138] shadow-lg rounded-md py-1 text-sm z-50 rounded-b-lg px-2 py-4">
-              <MenuItem text="Contact info" icon={<UserIcon width={16} height={16} />} />
-              <MenuItem text="Select messages" icon={<BoxSelectIcon width={16} height={16} />} />
-              <MenuItem text="Mute notifications" icon={<MessageSquareTextIcon width={16} height={16} />} />
-              <MenuItem text="Clear messages" danger icon={<MessageSquareTextIcon width={16} height={16} />} />
-              <MenuItem text="Logout" danger icon={<LogOutIcon width={16} height={16} />} />
+              <MenuItem text="New Chat" icon={<MessageSquareTextIcon width={16} height={16} />} onClick={handleNewChat} />
+              <MenuItem text="Chat info" icon={<UserIcon width={16} height={16} />} />
+              <MenuItem text="Mute Chats" icon={<BellOffIcon width={16} height={16} />} />
+              <MenuItem text="Clear Chats" danger icon={<MessageSquareTextIcon width={16} height={16} />} />
+              <MenuItem text="Logout" danger icon={<LogOutIcon width={16} height={16} />} onClick={handleLogout} />
             </div>
           )}
         </div>
@@ -74,11 +87,12 @@ export default function Sidebar() {
   );
 }
 
-function MenuItem({ text, danger, icon }) {
+function MenuItem({ text, danger, icon, onClick }) {
   return (
     <div
       className={` px-2 py-2 cursor-pointer hover:bg-[#111b21] flex items-center gap-1 rounded-lg
       ${danger ? "text-red-400" : "text-gray-200"}`}
+      onClick={onClick}
     >
       {icon && <span className="mr-2">{icon}</span>}
       {text}

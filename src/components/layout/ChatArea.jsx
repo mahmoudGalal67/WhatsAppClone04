@@ -52,7 +52,10 @@ export default function ChatArea() {
             />
           </button>
           <Avatar src={activeChat.avatar} />
-          <h3 className="text-sm font-medium">{activeChat.name}</h3>
+          <div>
+            <h3 className="text-sm font-medium">{activeChat.contactName}</h3>
+            <p className="text-xs text-gray-400">Online</p>
+          </div>
         </div>
 
         {/* Three dots */}

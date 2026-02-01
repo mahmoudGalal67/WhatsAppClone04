@@ -2,6 +2,8 @@ import { useState, useRef } from "react";
 import { useChat } from "../../context/ChatContext";
 import { ImageIcon, SendHorizonal } from "lucide-react";
 import SelectionBar from "./SelectionBar";
+import DeletePopup from "./DeletePopup";
+
 
 export default function MessageInput() {
   const [text, setText] = useState("");
@@ -30,11 +32,9 @@ export default function MessageInput() {
     fileRef.current.value = "";
   };
 
-  {
-    selectionMode && <SelectionBar onDelete={() => setShowDeletePopup(true)} />;
-  }
+
   return (
-    <div className="bg-[#202c33] p-3">
+    <div className="bg-[#202c33] p-3 relative">
       {/* Image Preview */}
       {preview && (
         <div className="mb-2 relative w-40">
@@ -92,6 +92,9 @@ export default function MessageInput() {
           </button>
         )}
       </form>
+      {
+        selectionMode && <SelectionBar onDelete={() => setShowDeletePopup(true)} />
+      }
 
       {showDeletePopup && (
         <DeletePopup onClose={() => setShowDeletePopup(false)} />

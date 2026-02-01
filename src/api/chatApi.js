@@ -1,5 +1,15 @@
 import axiosInstance from "./axios";
 
+
+export const loginRequest = async (email, password) => {
+    const { data } = await axiosInstance.post("/auth/login", {
+        UsernameOrEmail: email,
+        password,
+    });
+
+    return data;
+};
+
 export const getConversations = async () => {
     const { data } = await axiosInstance.get("/conversations");
     return data;

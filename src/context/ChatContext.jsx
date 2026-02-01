@@ -78,6 +78,7 @@ export function ChatProvider({ children }) {
         selectedMessages,
         toggleMessageSelection,
         clearSelection,
+        setMessages
       }}
     >
       {children}
