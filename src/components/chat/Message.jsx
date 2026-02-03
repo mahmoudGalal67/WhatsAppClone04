@@ -83,7 +83,6 @@ export default function Message({ message }) {
             />
           </div>
         )}
-        {/* Checkbox */}
 
 
         {message.content && <p>{message.content}</p>}
