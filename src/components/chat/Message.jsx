@@ -22,6 +22,7 @@ export default function Message({ message }) {
     selectedMessages,
     toggleMessageSelection,
     setSelectionMode,
+    clearSelection
   } = useChat();
 
   const isSelected = selectedMessages.includes(message.id);
@@ -36,6 +37,23 @@ export default function Message({ message }) {
     document.addEventListener("mousedown", handler);
     return () => document.removeEventListener("mousedown", handler);
   }, []);
+
+useEffect(() => {
+    const handleKeyDown = (e) => {
+      if (e.key === "Escape") {
+        setSelectionMode(false);
+        clearSelection();
+      }
+    };
+
+    if (selectionMode) {
+      window.addEventListener("keydown", handleKeyDown);
+    }
+
+    return () => {
+      window.removeEventListener("keydown", handleKeyDown);
+    };
+  }, [selectionMode]);
 
   return (
     <div className="flex  gap-4 flex-row-reverse">

@@ -4,12 +4,11 @@ import { ImageIcon, SendHorizonal } from "lucide-react";
 import SelectionBar from "./SelectionBar";
 import DeletePopup from "./DeletePopup";
 
-
 export default function MessageInput() {
   const [text, setText] = useState("");
   const [preview, setPreview] = useState(null);
   const fileRef = useRef();
-  const { handlelSendMessage, selectionMode } = useChat();
+  const { handlelSendMessage, selectionMode, profileOpen } = useChat();
   const [showDeletePopup, setShowDeletePopup] = useState(false);
 
   const submitText = (e) => {
@@ -32,9 +31,10 @@ export default function MessageInput() {
     fileRef.current.value = "";
   };
 
-
   return (
-    <div className="bg-[#202c33] p-3 relative">
+    <div
+      className={`bg-[#202c33] p-3 relative ${profileOpen ? "w-[66.66%]" : "w-full"}`}
+    >
       {/* Image Preview */}
       {preview && (
         <div className="mb-2 relative w-40">
@@ -92,9 +92,9 @@ export default function MessageInput() {
           </button>
         )}
       </form>
-      {
-        selectionMode && <SelectionBar onDelete={() => setShowDeletePopup(true)} />
-      }
+      {selectionMode && (
+        <SelectionBar onDelete={() => setShowDeletePopup(true)} />
+      )}
 
       {showDeletePopup && (
         <DeletePopup onClose={() => setShowDeletePopup(false)} />

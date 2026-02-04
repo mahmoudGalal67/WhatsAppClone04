@@ -1,5 +1,4 @@
 import { createContext, useContext, useEffect, useState } from "react";
-import chats from "../data/mockChats";
 import { getConversations, getMessages, sendMessage } from "../api/chatApi";
 
 const ChatContext = createContext();
