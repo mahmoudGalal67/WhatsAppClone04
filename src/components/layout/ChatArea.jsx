@@ -12,9 +12,15 @@ import {
   UserIcon,
 } from "lucide-react";
 import { deleteConversations } from "../../api/chatApi";
+import ProfilePanel from "../ProfilePanel";
+import EditProfilePanel from "../EditProfilePanel";
 
 export default function ChatArea() {
-  const { activeChat, closeChat, showChat, setConversations, setActiveChat } = useChat();
+  const { activeChat, closeChat, showChat, setConversations, setActiveChat, panelStack, profileOpen, openProfile, editProfileOpen } = useChat();
+
+  const profileIndex = panelStack.indexOf("profile");
+  const editIndex = panelStack.indexOf("editProfile");
+
   const [open, setOpen] = useState(false);
   const menuRef = useRef(null);
 
@@ -47,10 +53,10 @@ export default function ChatArea() {
 
   return (
     <main
-      className={`flex-1 flex scrollbar-hover flex-col bg-[#0b141a] relative ${showChat ? "translate-x-0" : "translate-x-full md:translate-x-0"} transform transition-transform duration-300 ease-in-out`}
+      className={` flex-1 flex scrollbar-hover flex-col bg-[#0b141a] relative ${showChat ? "translate-x-0" : "translate-x-full md:translate-x-0"} transform transition-transform duration-300 ease-in-out`}
     >
       {/* Header */}
-      <div className="h-14 px-4 flex items-center justify-between border-b border-[#2a3942] bg-[#202c33] relative">
+      <div className={`h-14 px-4 flex items-center justify-between border-b border-[#2a3942] bg-[#202c33] relative transition duration-300 ease-in-out ${profileOpen ? "mr-[33.333%]" : "mr-0"}`}>
         <div className="flex items-center gap-2">
           {/* Back arrow (mobile only) */}
           <button onClick={closeChat} className="md:hidden text-xl">
@@ -60,7 +66,7 @@ export default function ChatArea() {
               className="text-gray-400 cursor-pointer hover:text-white hover:bg-[#2a3942] p-2 rounded-full"
             />
           </button>
-          <Avatar src={activeChat.avatar} />
+          <Avatar src={activeChat.avatar} onClick={openProfile} />
           <div>
             <h3 className="text-sm font-medium">{activeChat.contactName}</h3>
             <p className="text-xs text-gray-400">Online</p>
@@ -108,6 +114,8 @@ export default function ChatArea() {
       </div>
       <MessageList />
       <MessageInput />
+      <ProfilePanel />
+      <EditProfilePanel />
     </main>
   );
 }

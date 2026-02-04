@@ -9,6 +9,13 @@ export const loginRequest = async (email, password) => {
 
     return data;
 };
+export const RegisterRequest = async (form) => {
+    const { data } = await axiosInstance.post("/auth/register", {
+        ...form,
+    });
+
+    return data;
+};
 
 export const getConversations = async () => {
     const { data } = await axiosInstance.get("/conversations");

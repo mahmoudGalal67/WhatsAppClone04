@@ -11,6 +11,9 @@ export function ChatProvider({ children }) {
   const [loadingMessages, setLoadingMessages] = useState(false);
   const [selectionMode, setSelectionMode] = useState(false);
   const [selectedMessages, setSelectedMessages] = useState([]);
+  const [selectionChatMode, setSelectionChatMode] = useState('');
+  const [selectedChats, setSelectedChats] = useState([]);
+  const [panelStack, setPanelStack] = useState([]);
   // 👇 mobile navigation
   const [showChat, setShowChat] = useState(false);
 
@@ -43,6 +46,11 @@ export function ChatProvider({ children }) {
     setSelectedMessages([]);
   };
 
+  const clearChatSelection = () => {
+    setSelectionChatMode(false);
+    setSelectedChats([]);
+  };
+
   const openChat = (chat) => {
     setActiveChat(chat);
     setShowChat(true);
@@ -62,6 +70,19 @@ export function ChatProvider({ children }) {
     ]);
   };
 
+  const openProfile = () => setPanelStack(["profile"]);
+
+  const openEditProfile = () =>
+    setPanelStack((prev) => [...prev, "editProfile"]);
+
+  const goBackPanel = () =>
+    setPanelStack((prev) => prev.slice(0, -1));
+
+  const closeAllPanels = () => setPanelStack([]);
+  const profileOpen = panelStack.includes("profile");
+  const editProfileOpen = panelStack.includes("editProfile");
+
+
   return (
     <ChatContext.Provider
       value={{
@@ -80,7 +101,19 @@ export function ChatProvider({ children }) {
         toggleMessageSelection,
         clearSelection,
         setMessages,
-        setConversations
+        setConversations,
+        selectionChatMode,
+        setSelectionChatMode,
+        setSelectedChats,
+        selectedChats,
+        clearChatSelection,
+        openProfile,
+        openEditProfile,
+        goBackPanel,
+        closeAllPanels,
+        profileOpen,
+        editProfileOpen,
+        panelStack,
       }}
     >
       {children}

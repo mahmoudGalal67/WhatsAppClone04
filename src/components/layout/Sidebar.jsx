@@ -1,4 +1,4 @@
-import { BellOffIcon, LogOutIcon, SearchIcon } from "lucide-react";
+import { BellOffIcon, LogOutIcon, SearchIcon, Send, Trash2, X } from "lucide-react";
 import ChatList from "../chat/ChatList";
 import Avatar from "../common/Avatar";
 import { useEffect, useRef, useState } from "react";
@@ -7,7 +7,7 @@ import { useChat } from "../../context/ChatContext";
 import NewChatModal from "../chat/NewChatModal";
 
 export default function Sidebar() {
-  const { conversations, showChat } = useChat();
+  const { showChat, selectionChatMode, clearChatSelection, selectedChats } = useChat();
   const [open, setOpen] = useState(false);
   const [openNewChat, setOpenNewChat] = useState(false);
   const menuRef = useRef(null);
@@ -34,12 +34,35 @@ export default function Sidebar() {
     setOpenNewChat(true);
     setOpen(false);
   };
+
+
+  const handleDelete = () => {
+
+  }
+
+  useEffect(() => {
+    const handleKeyDown = (e) => {
+      if (e.key === "Escape") {
+        clearChatSelection();
+      }
+    };
+
+    if (selectionChatMode) {
+      window.addEventListener("keydown", handleKeyDown);
+    }
+
+    return () => {
+      window.removeEventListener("keydown", handleKeyDown);
+    };
+  }, [selectionChatMode]);
+
+
   return (
     <aside
       className={`
     bg-[#202c33] border-r border-[#2a3942]
     flex flex-col
-    w-full md:w-[520px]
+    w-full md:w-[420px]
     h-full
 
     absolute md:relative
@@ -83,6 +106,26 @@ export default function Sidebar() {
       </div>
 
       <ChatList />
+      {
+        selectionChatMode && (
+          <div className="h-14 bg-[#202c33] flex items-center justify-between px-4 border-b border-[#2a3942] absolute bottom-0 left-0 right-0 border-t ">
+            <div className="flex items-center gap-4">
+              <button onClick={clearChatSelection} className="cursor-pointer">
+                <X />
+              </button>
+              <span>{selectedChats.length} selected</span>
+            </div>
+
+            <button
+              onClick={handleDelete}
+              className="text-red-400 hover:text-red-600 transition cursor-pointer transition-all duration-300 ease-in-out hover:-translate-y-1 hover:scale-110 hover:translate-x-1"
+            >
+              {selectionChatMode === 'deleteChats' && <Trash2 />}
+              {selectionChatMode === 'sendMessages' && <Send />}
+            </button>
+          </div>
+        )
+      }
     </aside>
   );
 }

@@ -5,10 +5,9 @@ import Avatar from "../common/Avatar";
 import { useEffect, useRef, useState } from "react";
 
 export default function ChatItem({ chat }) {
-  const { openChat, activeChat, selectionMode, setSelectionMode } = useChat();
+  const { openChat, activeChat, selectionChatMode, setSelectionChatMode, selectedChats, setSelectedChats } = useChat();
   const [chatOption, setChatOption] = useState(false);
   const [showArrow, setshowArrow] = useState(false);
-  const [selectedChats, setSelectedChats] = useState([]);
   const menuRef = useRef(null);
 
   const isSelected = selectedChats.includes(chat.id);
@@ -39,12 +38,18 @@ export default function ChatItem({ chat }) {
       className={`relative flex  items-center gap-5 my-2 rounded-lg px-4 py-3 cursor-pointer hover:bg-[#111b21]
       ${activeChat?.id === chat.id ? "bg-[#111b21]" : ""}`}
     >
-      {selectionMode && (
-        <label className="relative flex items-center cursor-pointer my-auto">
+      {selectionChatMode && (
+        <label
+          onClick={(e) => e.stopPropagation()}
+          className="relative flex items-center cursor-pointer my-auto">
           <input
             type="checkbox"
             checked={isSelected}
-            onChange={() => toggleChatSelection(chat.id)}
+            onChange={(e) => {
+              e.stopPropagation();
+              toggleChatSelection(chat.id)
+            }
+            }
             className="peer sr-only"
           />
           <div
@@ -75,15 +80,21 @@ export default function ChatItem({ chat }) {
           />
           <MenuItem
             text="Share Message"
+            onClick={(e) => {
+              e.stopPropagation();
+              setChatOption(false);
+              setSelectionChatMode('sendMessages');
+            }}
             icon={<Share width={16} height={16} />}
           />
           <div className="w-full h-[1px] bg-gray-600 my-2" />
 
 
           <MenuItem
-            onClick={() => {
+            onClick={(e) => {
+              e.stopPropagation();
               setChatOption(false);
-              setSelectionMode(true);
+              setSelectionChatMode('deleteChats');
             }}
             text="Delete chat"
             danger
@@ -94,9 +105,10 @@ export default function ChatItem({ chat }) {
 
       <Avatar src={chat.avatar} />
       {/* Hover Arrow */}
-      {showArrow && !selectionMode && (
+      {showArrow && !selectionChatMode && (
         <button
-          onClick={() => {
+          onClick={(e) => {
+            e.stopPropagation();
             setChatOption((prev) => !prev);
           }}
           className="absolute right-5 bottom-3 -translate-y-1/2 text-gray-400 hover:text-white cursor-pointer"
