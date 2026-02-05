@@ -9,6 +9,7 @@ import NewChatModal from "../chat/NewChatModal";
 export default function Sidebar() {
   const { showChat, selectionChatMode, clearChatSelection, selectedChats } = useChat();
   const [open, setOpen] = useState(false);
+  const [confirmDelete, setConfirmDelete] = useState(false);
   const [openNewChat, setOpenNewChat] = useState(false);
   const menuRef = useRef(null);
 
@@ -56,6 +57,15 @@ export default function Sidebar() {
     };
   }, [selectionChatMode]);
 
+
+  const handleChatOption = () => {
+    if (selectionChatMode === 'deleteChats') {
+      setConfirmDelete(true);
+    }
+    else if (selectionChatMode === 'sendMessages') {
+
+    }
+  }
 
   return (
     <aside
@@ -117,7 +127,7 @@ export default function Sidebar() {
             </div>
 
             <button
-              onClick={handleDelete}
+              onClick={handleChatOption}
               className="text-red-400 hover:text-red-600 transition cursor-pointer transition-all duration-300 ease-in-out hover:-translate-y-1 hover:scale-110 hover:translate-x-1"
             >
               {selectionChatMode === 'deleteChats' && <Trash2 />}

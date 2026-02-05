@@ -1,8 +1,13 @@
 import { useChat } from "../../context/ChatContext";
 import ChatItem from "./ChatItem";
+import { ChatListSkeleton } from "./Loading";
 
 export default function ChatList() {
-  const { conversations } = useChat();
+  const { conversations, loadingConversations } = useChat();
+
+  if (loadingConversations) {
+    return <ChatListSkeleton />;
+  }
 
   return (
     <div className="flex-1 overflow-y-auto px-4 py-2 scrollbar-hover">

@@ -26,8 +26,11 @@ export const addConversations = async (payload) => {
     const { data } = await axiosInstance.post("/conversations/by-phone", { phoneNumber: payload.phoneNumber, name: payload.name, imageUrl: payload.imageUrl });
     return data;
 };
-export const deleteConversations = async (id) => {
+export const deleteConversation = async (id) => {
     const { data } = await axiosInstance.delete(`/conversations/${id}`);
+};
+export const deleteConversations = async (ids) => {
+    const { data } = await axiosInstance.delete(`/conversations/bulk-delete`, { data: { conversationIds: ids } });
 };
 
 export const getMessages = async (conversationId) => {

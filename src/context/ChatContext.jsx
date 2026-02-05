@@ -9,6 +9,7 @@ export function ChatProvider({ children }) {
   const [activeChat, setActiveChat] = useState(null);
   const [messages, setMessages] = useState([]);
   const [loadingMessages, setLoadingMessages] = useState(false);
+  const [loadingConversations, setLoadingConversations] = useState(false);
   const [selectionMode, setSelectionMode] = useState(false);
   const [selectedMessages, setSelectedMessages] = useState([]);
   const [selectionChatMode, setSelectionChatMode] = useState('');
@@ -18,7 +19,8 @@ export function ChatProvider({ children }) {
   const [showChat, setShowChat] = useState(false);
 
   useEffect(() => {
-    getConversations().then(setConversations).catch(console.error);
+    setLoadingConversations(true)
+    getConversations().then(setConversations).catch(console.error).finally(() => setLoadingConversations(false));
   }, []);
 
   // Load messages when active chat changes
@@ -95,6 +97,7 @@ export function ChatProvider({ children }) {
         showChat,
         messages,
         loadingMessages,
+        loadingConversations,
         selectionMode,
         setSelectionMode,
         selectedMessages,

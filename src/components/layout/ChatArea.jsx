@@ -14,9 +14,10 @@ import {
 import { deleteConversations } from "../../api/chatApi";
 import ProfilePanel from "../ProfilePanel";
 import EditProfilePanel from "../EditProfilePanel";
+import { ChatHeaderSkeleton, MessagesSkeleton } from "../chat/Loading";
 
 export default function ChatArea() {
-  const { activeChat, closeChat, showChat, setConversations, setActiveChat, panelStack, profileOpen, openProfile, editProfileOpen } = useChat();
+  const { activeChat, closeChat, showChat, setConversations, setActiveChat, panelStack, profileOpen, openProfile, loadingMessages } = useChat();
 
   const profileIndex = panelStack.indexOf("profile");
   const editIndex = panelStack.indexOf("editProfile");
@@ -49,6 +50,17 @@ export default function ChatArea() {
     setConversations((prev) => prev.filter((conv => conv.id != activeChat.id)))
     setActiveChat(null)
     setOpen(false)
+  }
+
+  if (loadingMessages) {
+    return (
+      <main
+        className={` flex-1 flex scrollbar-hover flex-col bg-[#0b141a] relative`}
+      >
+        <ChatHeaderSkeleton />
+        <MessagesSkeleton />
+      </main>
+    );
   }
 
   return (
