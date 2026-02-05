@@ -1,4 +1,4 @@
-import { ArrowLeft, Check } from "lucide-react";
+import { ArrowLeft, Check, CloudSync, Loader2, Phone, User } from "lucide-react";
 import { useState } from "react";
 import { useChat } from "../context/ChatContext";
 
@@ -6,54 +6,76 @@ export default function EditProfilePanel() {
     const { editProfileOpen, goBackPanel, activeChat } = useChat();
     const [name, setName] = useState(activeChat?.contactName || "");
     const [phone, setPhone] = useState(activeChat?.phoneNumber || "");
+    const [checked, setChecked] = useState(false);
+    const [loading, setLoading] = useState(false);
 
     return (
         <div
-            className={`absolute right-0 top-0 h-full w-1/3 bg-[#0b141a]
+            className={`absolute right-0 top-0 h-full xl:w-1/3 w-full bg-[#0b141a] h-screen flex flex-col
   transition duration-300
-  ${editProfileOpen ? "translate-x-0" : "translate-x-full"}
+  ${editProfileOpen ? "translate-x-0 md:translate-x-0" : "translate-x-full md:translate-x-full"}
   z-[30]`}
         >
 
             {/* Header */}
             <div className="flex items-center justify-between p-4 border-b border-[#2a3942]">
-                <div className="flex items-center gap-4">
-                    <button onClick={goBackPanel}>
+                <div className="flex items-center gap-2">
+                    <button onClick={goBackPanel} className="hover:bg-[#2a3942] p-2 rounded-full cursor-pointer">
                         <ArrowLeft />
                     </button>
                     <h2 className="text-lg font-medium">Edit contact</h2>
                 </div>
 
-                <button className="bg-[#00a884] p-2 rounded-full">
-                    <Check size={18} />
-                </button>
+              
             </div>
 
             {/* Form */}
             <div className="p-6 space-y-6">
-                <div>
-                    <label className="text-sm text-gray-400">Name</label>
+                <div className="flex items-center gap-2">
+                    <User size={20} />
+                   <div className="flex flex-col gap-1 w-full">
+                     <label className="text-sm text-gray-400 text-left">Name</label>
                     <input
                         value={name}
                         onChange={(e) => setName(e.target.value)}
                         className="w-full bg-transparent border-b border-gray-600 focus:border-[#00a884] outline-none py-2"
                     />
+                   </div>
                 </div>
 
-                <div>
-                    <label className="text-sm text-gray-400">Phone</label>
+                <div className="flex items-center gap-2">
+                    <Phone size={20} />
+                    <div className="flex flex-col gap-1 w-full">
+                    <label className="text-sm text-gray-400 text-left">Phone</label>
                     <input
                         value={phone}
                         onChange={(e) => setPhone(e.target.value)}
                         className="w-full bg-transparent border-b border-gray-600 focus:border-[#00a884] outline-none py-2"
                     />
+                    </div>
                 </div>
 
-                <div className="flex items-center justify-between mt-8">
-                    <span>Sync contact to phone</span>
-                    <div className="w-12 h-6 bg-[#00a884] rounded-full" />
+                <div className="flex items-center gap-8 mt-8">
+                        <CloudSync size={18} className="text-gray-400"/>
+                   <div className="flex flex-col gap-1 justify-start text-left">
+                     <p>Sync contact to phone</p>
+                     <p className="text-xs text-gray-400">This contact will be synced to your phone</p>
+                   </div>
+                <button
+      onClick={() => setChecked(!checked)}
+      className={`w-11 h-6 flex items-center rounded-full p-1 transition-colors duration-300 ml-auto
+        ${checked ? "bg-[#25D366]" : "bg-gray-600"}`}
+    >
+      <div
+        className={`bg-white w-4 h-4 rounded-full shadow-md transform transition-transform duration-300
+          ${checked ? "translate-x-5" : "translate-x-0"}`}
+      />
+    </button>
                 </div>
             </div>
+              <button className="bg-[#00a884] p-3 rounded-full mt-auto w-fit justify-self-center items-self-center mx-auto mb-12">
+                   {loading ? <Loader2 size={26} className="animate-spin" /> : <Check size={26} />}
+                </button>
         </div>
     );
 }

@@ -24,7 +24,7 @@ export default function DeletePopup({ onClose, handleDelete }) {
 
   return (
     <div className="fixed inset-0 bg-black/60 flex items-center justify-center z-50" >
-      <div className="bg-[#202c33] p-6 rounded-lg w-[480px] flex flex-col gap-12" ref={menuRef}>
+      <div className="bg-[#202c33] p-6 rounded-lg max-w-[480px] w-[90%] flex flex-col gap-12" ref={menuRef}>
         <h2 className="text-lg mb-4 text-left">
           Delete ?
         </h2>

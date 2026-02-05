@@ -77,12 +77,19 @@ export default function ChatItem({ chat }) {
           <MenuItem
             text="Forward"
             icon={<ForwardIcon width={16} height={16} />}
+            onClick={(e) => {
+              e.stopPropagation();
+              toggleChatSelection(chat.id)
+              setChatOption(false);
+              setSelectionChatMode('forward');
+            }}
           />
           <MenuItem
             text="Share Message"
             onClick={(e) => {
               e.stopPropagation();
               setChatOption(false);
+              toggleChatSelection(chat.id)
               setSelectionChatMode('sendMessages');
             }}
             icon={<Share width={16} height={16} />}
@@ -93,6 +100,7 @@ export default function ChatItem({ chat }) {
           <MenuItem
             onClick={(e) => {
               e.stopPropagation();
+              toggleChatSelection(chat.id)
               setChatOption(false);
               setSelectionChatMode('deleteChats');
             }}

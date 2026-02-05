@@ -5,7 +5,6 @@ import Avatar from "../common/Avatar";
 import { useEffect, useRef, useState } from "react";
 import {
   ArrowLeftIcon,
-  BackpackIcon,
   BoxSelectIcon,
   MessageSquareTextIcon,
   TrashIcon,
@@ -19,8 +18,6 @@ import { ChatHeaderSkeleton, MessagesSkeleton } from "../chat/Loading";
 export default function ChatArea() {
   const { activeChat, closeChat, showChat, setConversations, setActiveChat, panelStack, profileOpen, openProfile, loadingMessages } = useChat();
 
-  const profileIndex = panelStack.indexOf("profile");
-  const editIndex = panelStack.indexOf("editProfile");
 
   const [open, setOpen] = useState(false);
   const menuRef = useRef(null);
@@ -44,13 +41,12 @@ export default function ChatArea() {
     );
   }
 
-
   const deleteChat = () => {
-    deleteConversations(activeChat.id)
-    setConversations((prev) => prev.filter((conv => conv.id != activeChat.id)))
-    setActiveChat(null)
-    setOpen(false)
-  }
+    deleteConversations(activeChat.id);
+    setConversations((prev) => prev.filter((conv) => conv.id != activeChat.id));
+    setActiveChat(null);
+    setOpen(false);
+  };
 
   if (loadingMessages) {
     return (
@@ -68,7 +64,9 @@ export default function ChatArea() {
       className={` flex-1 flex scrollbar-hover flex-col bg-[#0b141a] relative ${showChat ? "translate-x-0" : "translate-x-full md:translate-x-0"} transform transition-transform duration-300 ease-in-out`}
     >
       {/* Header */}
-      <div className={`h-14 px-4 flex items-center justify-between border-b border-[#2a3942] bg-[#202c33] relative transition duration-300 ease-in-out ${profileOpen ? "mr-[33.333%]" : "mr-0"}`}>
+      <div
+        className={`h-14 px-4 flex items-center justify-between border-b border-[#2a3942] bg-[#202c33] relative transition duration-300 ease-in-out ${profileOpen ? "w-[66.66%]" : "w-full"}`}
+      >
         <div className="flex items-center gap-2">
           {/* Back arrow (mobile only) */}
           <button onClick={closeChat} className="md:hidden text-xl">
@@ -124,10 +122,11 @@ export default function ChatArea() {
           )}
         </div>
       </div>
+      <ProfilePanel />
       <MessageList />
       <MessageInput />
-      <ProfilePanel />
       <EditProfilePanel />
+      <ProfilePanel />
     </main>
   );
 }

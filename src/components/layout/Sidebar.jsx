@@ -1,17 +1,23 @@
-import { BellOffIcon, LogOutIcon, SearchIcon, Send, Trash2, X } from "lucide-react";
+import { BellOffIcon, Forward, LogOutIcon, SearchIcon, Send, Trash2, X } from "lucide-react";
 import ChatList from "../chat/ChatList";
 import Avatar from "../common/Avatar";
 import { useEffect, useRef, useState } from "react";
 import { BoxSelectIcon, MessageSquareTextIcon, UserIcon } from "lucide-react";
 import { useChat } from "../../context/ChatContext";
 import NewChatModal from "../chat/NewChatModal";
+import ChatOptions from "../chat/ChatOptions";
+import DeletePopup from "../chat/DeletePopup";
+import { deleteConversations } from "../../api/chatApi";
 
 export default function Sidebar() {
-  const { showChat, selectionChatMode, clearChatSelection, selectedChats } = useChat();
+  const { showChat, selectionChatMode, clearChatSelection, selectedChats, setConversations, setActiveChat } = useChat();
   const [open, setOpen] = useState(false);
   const [confirmDelete, setConfirmDelete] = useState(false);
   const [openNewChat, setOpenNewChat] = useState(false);
+  const [chatOption, setchatOption] = useState('');
   const menuRef = useRef(null);
+
+  console.log(selectedChats.length);
 
   // Close menu when clicking outside
   useEffect(() => {
@@ -38,7 +44,10 @@ export default function Sidebar() {
 
 
   const handleDelete = () => {
-
+    deleteConversations(selectedChats)
+    setConversations((prev) => prev.filter((conv) => !selectedChats.includes(conv.id)))
+    setActiveChat(null)
+    clearChatSelection()
   }
 
   useEffect(() => {
@@ -130,12 +139,15 @@ export default function Sidebar() {
               onClick={handleChatOption}
               className="text-red-400 hover:text-red-600 transition cursor-pointer transition-all duration-300 ease-in-out hover:-translate-y-1 hover:scale-110 hover:translate-x-1"
             >
-              {selectionChatMode === 'deleteChats' && <Trash2 />}
-              {selectionChatMode === 'sendMessages' && <Send />}
+              {selectionChatMode === 'deleteChats' && selectedChats.length != 0 && <Trash2 onClick={() => { setchatOption('deleteChats') }} color="red" size={25} />}
+              {selectionChatMode === 'sendMessages' && selectedChats.length != 0 && <Send onClick={() => { setchatOption('sendMessages') }} color="green" size={25} />}
+              {selectionChatMode === 'forward' && selectedChats.length != 0 && <Forward onClick={() => { setchatOption('forward') }} color="blue" size={25} />}
             </button>
           </div>
         )
       }
+      {chatOption && <ChatOptions onClose={() => setchatOption('')} option={chatOption} />}
+      {confirmDelete && <DeletePopup onClose={() => setConfirmDelete(false)} handleDelete={handleDelete} />}
     </aside>
   );
 }

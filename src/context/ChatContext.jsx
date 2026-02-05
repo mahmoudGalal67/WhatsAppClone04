@@ -1,5 +1,4 @@
 import { createContext, useContext, useEffect, useState } from "react";
-import chats from "../data/mockChats";
 import { getConversations, getMessages, sendMessage } from "../api/chatApi";
 
 const ChatContext = createContext();
@@ -10,7 +9,7 @@ export function ChatProvider({ children }) {
   const [messages, setMessages] = useState([]);
   const [loadingMessages, setLoadingMessages] = useState(false);
   const [loadingConversations, setLoadingConversations] = useState(false);
-  const [selectionMode, setSelectionMode] = useState(false);
+  const [selectionMode, setSelectionMode] = useState('');
   const [selectedMessages, setSelectedMessages] = useState([]);
   const [selectionChatMode, setSelectionChatMode] = useState('');
   const [selectedChats, setSelectedChats] = useState([]);

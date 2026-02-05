@@ -56,7 +56,7 @@ export default function NewChatModal({ onClose }) {
 
     return (
         <div ref={menuRef} className="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-50">
-            <div className="bg-[#202c33] w-full max-w-md rounded-2xl shadow-xl p-6 relative animate-fadeIn">
+            <div className="bg-[#202c33]  max-w-md w-[90%] rounded-2xl shadow-xl p-6 relative animate-fadeIn">
 
                 {/* Header */}
                 <div className="flex items-center justify-between mb-6 ">

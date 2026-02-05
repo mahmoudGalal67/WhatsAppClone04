@@ -30,11 +30,15 @@ export const deleteConversation = async (id) => {
     const { data } = await axiosInstance.delete(`/conversations/${id}`);
 };
 export const deleteConversations = async (ids) => {
-    const { data } = await axiosInstance.delete(`/conversations/bulk-delete`, { data: { conversationIds: ids } });
+    const { data } = await axiosInstance.post(`/conversations/bulk-delete`, { conversationIds: ids });
 };
 
 export const getMessages = async (conversationId) => {
     const { data } = await axiosInstance.get(`/messages/conversation/${conversationId}`);
+    return data;
+};
+export const deleteMessages = async (messageIds) => {
+    const { data } = await axiosInstance.delete(`/messages/bulk`, { data: { messageIds } });
     return data;
 };
 

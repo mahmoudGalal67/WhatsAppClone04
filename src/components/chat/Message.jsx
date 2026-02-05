@@ -15,6 +15,7 @@ import Delivered from "../icons/delevired";
 export default function Message({ message }) {
   const [messageOption, setmessageOption] = useState(false);
   const [showArrow, setshowArrow] = useState(false);
+
   const menuRef = useRef(null);
 
   const {
@@ -22,6 +23,8 @@ export default function Message({ message }) {
     selectedMessages,
     toggleMessageSelection,
     setSelectionMode,
+    clearSelection,
+
   } = useChat();
 
   const isSelected = selectedMessages.includes(message.id);
@@ -37,6 +40,23 @@ export default function Message({ message }) {
     return () => document.removeEventListener("mousedown", handler);
   }, []);
 
+  useEffect(() => {
+    const handleKeyDown = (e) => {
+      if (e.key === "Escape") {
+        setSelectionMode(false);
+        clearSelection();
+      }
+    };
+
+    if (selectionMode) {
+      window.addEventListener("keydown", handleKeyDown);
+    }
+
+    return () => {
+      window.removeEventListener("keydown", handleKeyDown);
+    };
+  }, [selectionMode]);
+
   return (
     <div className="flex  gap-4 flex-row-reverse">
       <div
@@ -48,34 +68,60 @@ export default function Message({ message }) {
         onMouseLeave={() => setshowArrow(false)}
       >
         {/* Dropdown */}
-        {messageOption && (
+        {messageOption == true && (
           <div className={`absolute top-6 ${!message.isIncoming ? "left-[70%]" : "right-[70%]"} w-48 h-fit bg-[#233138] shadow-lg rounded-md text-sm z-50 rounded-b-lg px-2 py-4`}>
             <MenuItem
               text="Reply"
               icon={<MessageSquareTextIcon width={16} height={16} />}
+              onClick={() => {
+                setmessageOption(false);
+                setSelectionMode('reply');
+                toggleMessageSelection(message.id);
+              }}
             />
             <MenuItem
               text="Copy"
               icon={<CopyIcon width={16} height={16} />}
+              onClick={() => {
+                setmessageOption(false);
+                setSelectionMode('copy');
+                toggleMessageSelection(message.id);
+              }}
             />
             <MenuItem
               text="Forward"
               icon={<ForwardIcon width={16} height={16} />}
+              onClick={() => {
+                setmessageOption(false);
+                setSelectionMode('forward');
+                toggleMessageSelection(message.id);
+              }}
             />
             <MenuItem
               text="Star"
               icon={<StarIcon width={16} height={16} />}
+              onClick={() => {
+                setmessageOption(false);
+                setSelectionMode('star');
+                toggleMessageSelection(message.id);
+              }}
             />
             <div className="w-full h-[1px] bg-gray-600 my-2" />
             <MenuItem
               text="Report"
               icon={<FlagIcon width={16} height={16} />}
+              onClick={() => {
+                setmessageOption(false);
+                setSelectionMode('report');
+                toggleMessageSelection(message.id);
+              }}
             />
 
             <MenuItem
               onClick={() => {
                 setmessageOption(false);
-                setSelectionMode(true);
+                setSelectionMode('delete');
+                toggleMessageSelection(message.id);
               }}
               text="Delete chat"
               danger
