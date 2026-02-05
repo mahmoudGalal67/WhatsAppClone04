@@ -37,6 +37,11 @@ export const getMessages = async (conversationId) => {
     const { data } = await axiosInstance.get(`/messages/conversation/${conversationId}`);
     return data;
 };
+
+export const shareMessages = async (payload) => {
+    const { data } = await axiosInstance.post(`/message-lists/create-send-now`, payload);
+    return data;
+};
 export const deleteMessages = async (messageIds) => {
     const { data } = await axiosInstance.delete(`/messages/bulk`, { data: { messageIds } });
     return data;

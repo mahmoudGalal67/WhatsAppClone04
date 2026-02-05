@@ -10,7 +10,7 @@ export default function ChatItem({ chat }) {
   const [showArrow, setshowArrow] = useState(false);
   const menuRef = useRef(null);
 
-  const isSelected = selectedChats.includes(chat.id);
+  const isSelected = selectedChats.includes(chat.contactId);
 
   const toggleChatSelection = (id) => {
     setSelectedChats((prev) =>
@@ -36,7 +36,7 @@ export default function ChatItem({ chat }) {
       onMouseEnter={() => setshowArrow(true)}
       onMouseLeave={() => setshowArrow(false)}
       className={`relative flex  items-center gap-5 my-2 rounded-lg px-4 py-3 cursor-pointer hover:bg-[#111b21]
-      ${activeChat?.id === chat.id ? "bg-[#111b21]" : ""}`}
+      ${activeChat?.contactId === chat.contactId ? "bg-[#111b21]" : ""}`}
     >
       {selectionChatMode && (
         <label
@@ -47,7 +47,7 @@ export default function ChatItem({ chat }) {
             checked={isSelected}
             onChange={(e) => {
               e.stopPropagation();
-              toggleChatSelection(chat.id)
+              toggleChatSelection(chat.contactId)
             }
             }
             className="peer sr-only"
@@ -79,7 +79,7 @@ export default function ChatItem({ chat }) {
             icon={<ForwardIcon width={16} height={16} />}
             onClick={(e) => {
               e.stopPropagation();
-              toggleChatSelection(chat.id)
+              toggleChatSelection(chat.contactId)
               setChatOption(false);
               setSelectionChatMode('forward');
             }}
@@ -89,7 +89,7 @@ export default function ChatItem({ chat }) {
             onClick={(e) => {
               e.stopPropagation();
               setChatOption(false);
-              toggleChatSelection(chat.id)
+              toggleChatSelection(chat.contactId)
               setSelectionChatMode('sendMessages');
             }}
             icon={<Share width={16} height={16} />}
@@ -100,7 +100,7 @@ export default function ChatItem({ chat }) {
           <MenuItem
             onClick={(e) => {
               e.stopPropagation();
-              toggleChatSelection(chat.id)
+              toggleChatSelection(chat.contactId)
               setChatOption(false);
               setSelectionChatMode('deleteChats');
             }}

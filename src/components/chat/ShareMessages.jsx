@@ -1,12 +1,13 @@
 import { useEffect, useRef, useState } from "react";
 import { X } from "lucide-react";
-import { addConversations } from "../../api/chatApi";
+import { addConversations, shareMessages } from "../../api/chatApi";
+import { useChat } from "../../context/ChatContext";
 
-export default function ChatOptions({ onClose, option }) {
+export default function ShareMessages({ onClose, option }) {
     const [message, setMessage] = useState("");
     const [loading, setLoading] = useState(false);
     const menuRef = useRef(null);
-
+    const { selectedChats } = useChat();
 
     useEffect(() => {
         const handler = (e) => {
@@ -18,21 +19,19 @@ export default function ChatOptions({ onClose, option }) {
         return () => document.removeEventListener("mousedown", handler);
     }, [onClose]);
 
-    const handleImageChange = (e) => {
-        const file = e.target.files[0];
-        if (file) {
-            setImage(file);
-            setPreview(URL.createObjectURL(file));
-        }
-    };
-
     const handleSubmit = async (e) => {
         e.preventDefault();
         setLoading(true);
 
         try {
 
-            const response = await addConversations({ message })
+            await shareMessages({
+                "title": "string",
+                "message": message,
+                "contactIds": [
+                    ...selectedChats
+                ]
+            })
             onClose();
         } catch (err) {
             console.error(err);
@@ -80,23 +79,6 @@ export default function ChatOptions({ onClose, option }) {
                             {loading ? "Sending..." : "Send"}
                         </button>
                     </form>
-                </div>
-            )}
-            {option === "deleteChats" && (
-                <div className="fixed inset-0 bg-black/60 flex items-center justify-center z-50" >
-                    <div className="bg-[#202c33] p-6 rounded-lg w-[90%] max-w-md flex flex-col gap-12" ref={menuRef}>
-                        <h2 className="text-lg mb-4 text-left">
-                            Delete Chats?
-                        </h2>
-                        <div className="flex justify-end gap-4">
-                            <button onClick={onClose} className="text-green-400 cursor-pointer hover:text-green-500 transition-colors hover:bg-green-500/10 px-4 py-2 rounded-3xl">
-                                Cancel
-                            </button>
-                            <button className="text-black font-semibold bg-green-500 px-8 py-2 rounded-3xl cursor-pointer hover:bg-green-600 transition-colors">
-                                Delete for me
-                            </button>
-                        </div>
-                    </div>
                 </div>
             )}
         </div>

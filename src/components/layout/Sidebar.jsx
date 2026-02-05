@@ -5,19 +5,19 @@ import { useEffect, useRef, useState } from "react";
 import { BoxSelectIcon, MessageSquareTextIcon, UserIcon } from "lucide-react";
 import { useChat } from "../../context/ChatContext";
 import NewChatModal from "../chat/NewChatModal";
-import ChatOptions from "../chat/ChatOptions";
 import DeletePopup from "../chat/DeletePopup";
 import { deleteConversations } from "../../api/chatApi";
+import ShareMessages from "../chat/ShareMessages";
 
 export default function Sidebar() {
-  const { showChat, selectionChatMode, clearChatSelection, selectedChats, setConversations, setActiveChat } = useChat();
+  const { showChat, selectionChatMode, clearChatSelection, selectedChats, setConversations, setActiveChat, conversations } = useChat();
   const [open, setOpen] = useState(false);
   const [confirmDelete, setConfirmDelete] = useState(false);
   const [openNewChat, setOpenNewChat] = useState(false);
   const [chatOption, setchatOption] = useState('');
   const menuRef = useRef(null);
+  console.log(conversations);
 
-  console.log(selectedChats.length);
 
   // Close menu when clicking outside
   useEffect(() => {
@@ -146,7 +146,7 @@ export default function Sidebar() {
           </div>
         )
       }
-      {chatOption && <ChatOptions onClose={() => setchatOption('')} option={chatOption} />}
+      {chatOption==='sendMessages' && <ShareMessages onClose={() => setchatOption('')} option={chatOption} />}
       {confirmDelete && <DeletePopup onClose={() => setConfirmDelete(false)} handleDelete={handleDelete} />}
     </aside>
   );

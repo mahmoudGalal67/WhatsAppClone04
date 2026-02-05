@@ -96,7 +96,7 @@ export default function MessageInput() {
             type="submit"
             className="text-green-500 absolute right-4 top-1/2 -translate-y-1/2 cursor-pointer"
           >
-            <SendHorizonal size={22} />
+            <SendHorizonal size={22} className="hover:scale-105 transition-all" />
           </button>
         )}
       </form>
